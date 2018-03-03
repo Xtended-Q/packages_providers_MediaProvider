@@ -19,6 +19,7 @@ package com.android.providers.media;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -48,6 +49,8 @@ public class MediaScannerReceiver extends BroadcastReceiver {
 
     private final static String SCAN_ALL = "com.android.providers.media.SCAN_ALL";
     private final static String DISMISS_SCAN = "com.android.providers.media.DISMISS_SCAN";
+
+    private static final String CHANNEL_ID = "notification_media_scanner";
 
     private Handler mDelayScan = new Handler();
 
@@ -143,11 +146,14 @@ public class MediaScannerReceiver extends BroadcastReceiver {
             return;
         }
 
-        Notification.Builder mBuilder = new Notification.Builder(context)
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,
+                context.getString(R.string.notification_media_scanner_name),
+                NotificationManager.IMPORTANCE_LOW);
+
+        Notification.Builder mBuilder = new Notification.Builder(context, CHANNEL_ID)
             .setContentTitle(context.getString(R.string.ask_scan_title))
             .setContentText(context.getString(R.string.ask_scan_text))
             .setSmallIcon(R.drawable.ask_scan);
-
         mBuilder.setContentIntent(pendingIntent);
 
         intent = new Intent(DISMISS_SCAN);
@@ -157,6 +163,7 @@ public class MediaScannerReceiver extends BroadcastReceiver {
 
         NotificationManager notificationManager =
             (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(notificationChannel);
         Notification notif = mBuilder.build();
         notif.flags    |= Notification.FLAG_AUTO_CANCEL;
         notif.priority  = Notification.PRIORITY_HIGH;

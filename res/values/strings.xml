@@ -134,4 +134,6 @@
     <add-resource type="string" name="sound_name_ringtone_14" />
     <add-resource type="string" name="sound_name_ringtone_15" />
 
+    <string name="notification_media_scanner_name">Media Scanner</string>
+
 </resources>
