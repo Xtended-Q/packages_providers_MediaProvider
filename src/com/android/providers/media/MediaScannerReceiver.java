@@ -61,7 +61,7 @@ public class MediaScannerReceiver extends BroadcastReceiver {
 
         // MediaScanner behavior on boot
         final int msob = Settings.System.getInt(context.getContentResolver(),
-                Settings.System.MEDIA_SCANNER_ON_BOOT, 1);
+                Settings.System.MEDIA_SCANNER_ON_BOOT, 0);
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
             switch (msob) {
